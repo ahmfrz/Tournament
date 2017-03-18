@@ -13,34 +13,32 @@ DROP DATABASE tournament;
 CREATE DATABASE tournament;
 \c tournament;
 
-
 /* Create players table */
 CREATE TABLE players(
-    player_id SERIAL PRIMARY KEY,
-    name TEXT);
-
+        player_id SERIAL PRIMARY KEY,
+        name TEXT
+    );
 
 /* Create match results table */
 CREATE TABLE match_results(
-    id SERIAL PRIMARY KEY,
-    winner INTEGER REFERENCES players(player_id),
-    loser INTEGER REFERENCES players(player_id)
+        id SERIAL PRIMARY KEY,
+        winner INTEGER REFERENCES players(player_id),
+        loser INTEGER REFERENCES players(player_id)
     );
-
 
 /* Select number of matches played by individual player */
 CREATE VIEW player AS
-    SELECT players.player_id AS id, count(id) AS matches FROM players LEFT JOIN match_results
+    SELECT players.player_id AS id, count(id) AS matches
+    FROM players LEFT JOIN match_results
     ON players.player_id = match_results.winner OR players.player_id = match_results.loser
     GROUP BY players.player_id;
 
-
 /* Select number of matches won by individual player */
 CREATE VIEW won_matches AS
-    SELECT player_id AS id,count(winner) AS wins FROM players LEFT JOIN match_results
+    SELECT player_id AS id, count(winner) AS wins
+    FROM players LEFT JOIN match_results
     ON player_id = winner
     GROUP BY player_id;
-
 
 /* Get player standings */
 CREATE VIEW standings AS
@@ -48,5 +46,4 @@ CREATE VIEW standings AS
     FROM players LEFT JOIN (
     player LEFT JOIN won_matches ON player.id = won_matches.id)
     ON players.player_id = player.id
-    ORDER BY wins DESC;
-
+    ORDER BY WINS DESC;
