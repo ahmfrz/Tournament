@@ -1,7 +1,7 @@
 # Tournament
 
 ## What is it?
- Pyhon program that simulates a [swiss system tournament](https://en.wikipedia.org/wiki/Swiss-system_tournament).
+ Python program that simulates a [swiss system tournament](https://en.wikipedia.org/wiki/Swiss-system_tournament).
 
 ## Installation steps
  Please follow the steps below:
