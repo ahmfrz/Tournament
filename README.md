@@ -21,6 +21,9 @@
  5. Make changes to Python functions ([tournament.py](https://github.com/ahmfrz/Tournament/blob/master/tournament.py))
  6. Run a test suite to verify your code ([tournament_test.py](https://github.com/ahmfrz/Tournament/blob/master/tournament_test.py))
 
+ #### Note:
+ Files with _multi suffix support multi-tournaments
+
 ## How to Contribute
 
 Find any bugs? Have suggestions? Contributions are welcome!
