@@ -6,23 +6,47 @@
 -- You can write comments in this file by starting them with two dashes, like
 -- these lines here.
 
-create table players(
-    player_id serial primary key,
-    name text);
+/* Drop the database for a clean start */
+DROP DATABASE tournament;
 
-create table match_result(
-    id serial primary key,
-    winner integer references players(player_id),
-    loser integer references players(player_id)
+/* Create tournament database and connect to it */
+CREATE DATABASE tournament;
+\c tournament;
+
+
+/* Create players table */
+CREATE TABLE players(
+    player_id SERIAL PRIMARY KEY,
+    name TEXT);
+
+
+/* Create match results table */
+CREATE TABLE match_results(
+    id SERIAL PRIMARY KEY,
+    winner INTEGER REFERENCES players(player_id),
+    loser INTEGER REFERENCES players(player_id)
     );
 
-create view standings as SELECT players.player_id AS ID, players.name AS NAME, WINS, MATCHES
+
+/* Select number of matches played by individual player */
+CREATE VIEW player AS
+    SELECT players.player_id AS id, count(id) AS matches FROM players LEFT JOIN match_results
+    ON players.player_id = match_results.winner OR players.player_id = match_results.loser
+    GROUP BY players.player_id;
+
+
+/* Select number of matches won by individual player */
+CREATE VIEW won_matches AS
+    SELECT player_id AS id,count(winner) AS wins FROM players LEFT JOIN match_results
+    ON player_id = winner
+    GROUP BY player_id;
+
+
+/* Get player standings */
+CREATE VIEW standings AS
+    SELECT players.player_id AS ID, players.name AS NAME, WINS, MATCHES
     FROM players LEFT JOIN (
-    (SELECT players.player_id AS id, count(id) AS matches FROM players LEFT JOIN match_result
-    ON players.player_id = match_result.winner or players.player_id = match_result.loser group by
-    players.player_id) AS player
-    LEFT JOIN (SELECT player_id AS id,count(winner) AS wins FROM players LEFT JOIN match_result ON player_id = winner
-    GROUP BY player_id) AS won_matches
-    ON player.id = won_matches.id) ON players.player_id = player.id
+    player LEFT JOIN won_matches ON player.id = won_matches.id)
+    ON players.player_id = player.id
     ORDER BY wins DESC;
 

@@ -16,7 +16,7 @@ def deleteMatches():
     """Remove all the match records from the database."""
     connection = connect()
     cursor = connection.cursor()
-    query = "DELETE FROM match_result"
+    query = "DELETE FROM match_results"
     cursor.execute(query)
     connection.commit()
     connection.close()
@@ -36,7 +36,7 @@ def countPlayers():
     """Returns the number of players currently registered."""
     connection = connect()
     cursor = connection.cursor()
-    query = "SELECT COUNT(player_id) FROM players group by player_id"
+    query = "SELECT COUNT(player_id) FROM players GROUP BY player_id"
     cursor.execute(query)
     connection.commit()
     count = cursor.fetchall()
@@ -75,11 +75,10 @@ def playerStandings():
         matches: the number of matches the player has played
     """
     connection = connect()
-    query = '''SELECT * from standings'''
+    query = "SELECT * FROM standings"
     cursor = connection.cursor()
     cursor.execute(query)
     result = cursor.fetchall()
-    connection.commit()
     connection.close()
     return result
 
@@ -93,7 +92,7 @@ def reportMatch(winner, loser):
     """
     connection = connect()
     cursor = connection.cursor()
-    query = "INSERT INTO match_result(winner, loser) VALUES(%s, %s)"
+    query = "INSERT INTO match_results(winner, loser) VALUES(%s, %s)"
     cursor.execute(query, (bleach.clean(winner), bleach.clean(loser),))
     connection.commit()
     connection.close()
