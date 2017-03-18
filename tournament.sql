@@ -7,7 +7,7 @@
 -- these lines here.
 
 /* Drop the database for a clean start */
-DROP DATABASE tournament;
+DROP DATABASE IF EXISTS tournament;
 
 /* Create tournament database and connect to it */
 CREATE DATABASE tournament;

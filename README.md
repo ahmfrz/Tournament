@@ -16,13 +16,17 @@
 ### Steps
  1. Clone [udacity full stack nano degree vm repository](https://github.com/udacity/fullstack-nanodegree-vm)
  2. Launch [Vagrant VM](https://www.vagrantup.com/docs/)
+    a. Run 'vagrunt up' command in the 'udacity full stack nano degree vm repository' clone folder
+    (It may take a while to complete if you have never run it before)
+    b. Run 'vagrant ssh' command
+    c. Navigate to /vagrant/tournament folder
  3. Run 'psql -f tournament.sql' command to create tournament database with all tables
  4. Make changes to SQL database and table definitions file ([tournament.sql](https://github.com/ahmfrz/Tournament/blob/master/tournament.sql))
  5. Make changes to Python functions ([tournament.py](https://github.com/ahmfrz/Tournament/blob/master/tournament.py))
- 6. Run a test suite to verify your code ([tournament_test.py](https://github.com/ahmfrz/Tournament/blob/master/tournament_test.py))
+ 6. Run test suite to verify your code ([tournament_test.py](https://github.com/ahmfrz/Tournament/blob/master/tournament_test.py))
 
  #### Note:
- Files with _multi suffix support multi-tournaments
+ Files with _multi.xxx suffix support multi-tournaments
 
 ## How to Contribute
 

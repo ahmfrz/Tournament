@@ -15,7 +15,7 @@ CREATE DATABASE tournament;
 
 
 /* Create tournament table */
-CREATE TABLE tournament(
+CREATE TABLE tournaments(
         id SERIAL PRIMARY KEY
     );
 
@@ -24,7 +24,7 @@ CREATE TABLE tournament(
 CREATE TABLE players(
         player_id SERIAL PRIMARY KEY,
         name TEXT,
-        t_id INTEGER REFERENCES tournament
+        t_id INTEGER REFERENCES tournaments
     );
 
 
@@ -33,7 +33,7 @@ CREATE TABLE match_results(
         id SERIAL PRIMARY KEY,
         winner INTEGER REFERENCES players(player_id),
         loser INTEGER REFERENCES players(player_id),
-        t_id INTEGER REFERENCES tournament
+        t_id INTEGER REFERENCES tournaments
     );
 
 

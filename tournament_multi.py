@@ -16,8 +16,10 @@ def addTournament(tour_id):
     """Adds a tournament to the tournament database."""
     connection = connect()
     cursor = connection.cursor()
-    query = "INSERT INTO tournament VALUES(%s)"
-    cursor.execute(query, (tour_id,))
+    query = "INSERT INTO tournaments VALUES(%s)"
+
+    # Use bleach to prevent sql injection
+    cursor.execute(query, (bleach.clean(tour_id),))
     connection.commit()
     connection.close()
 
@@ -26,7 +28,7 @@ def deleteTournaments():
     """Remove all tournament records from database."""
     connection = connect()
     cursor = connection.cursor()
-    query = "DELETE FROM tournament"
+    query = "DELETE FROM tournaments"
     cursor.execute(query)
     connection.commit()
     connection.close()
@@ -76,6 +78,8 @@ def registerPlayer(name, tour_id):
     connection = connect()
     query = "INSERT INTO players(name, t_id) VALUES(%s, %s)"
     cursor = connection.cursor()
+
+    # Use bleach to prevent sql injection
     cursor.execute(query, (bleach.clean(name), bleach.clean(tour_id)))
     connection.commit()
     connection.close()
@@ -95,6 +99,8 @@ def playerStandings():
         matches: the number of matches the player has played
     """
     connection = connect()
+
+    # Use views for readability
     query = "SELECT * FROM standings"
     cursor = connection.cursor()
     cursor.execute(query)
@@ -113,6 +119,8 @@ def reportMatch(winner, loser, tour_id):
     connection = connect()
     cursor = connection.cursor()
     query = "INSERT INTO match_results(winner, loser, t_id) VALUES(%s, %s, %s)"
+
+    # Use bleach to prevent sql injection
     cursor.execute(
         query,
         (bleach.clean(winner),
@@ -139,6 +147,11 @@ def swissPairings():
     """
     standings = playerStandings()
     list_of_pairs = []
+
+    # Select pairs of players to compete
+    # As players are sorted on number of WINS,
+    # players are paired sequentially
+    # Index 0 - ID, Index 1 - Name, Index 4 - Tournament
     for player in range(len(standings)/2):
         pairs = (standings[player * 2][0],
                  standings[player * 2][1],

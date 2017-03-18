@@ -54,6 +54,8 @@ def registerPlayer(name):
     connection = connect()
     query = "INSERT INTO players(name) VALUES(%s)"
     cursor = connection.cursor()
+
+    # Use bleach to prevent sql injection
     cursor.execute(query, (bleach.clean(name),))
     connection.commit()
     connection.close()
@@ -87,6 +89,8 @@ def reportMatch(winner, loser):
     """
     connection = connect()
     cursor = connection.cursor()
+
+    # Use bleach to prevent sql injection
     query = "INSERT INTO match_results(winner, loser) VALUES(%s, %s)"
     cursor.execute(query, (bleach.clean(winner), bleach.clean(loser),))
     connection.commit()
@@ -108,8 +112,14 @@ def swissPairings():
     """
     standings = playerStandings()
     list_of_pairs = []
+
+    # Select pairs of players to compete
+    # As players are sorted on number of WINS,
+    # players are paired sequentially
     for player in range(len(standings)/2):
-        pairs = (standings[player * 2][0], standings[player * 2][1],
-                 standings[player * 2 + 1][0], standings[player * 2 + 1][1])
+        pairs = (standings[player * 2][0],
+                 standings[player * 2][1],
+                 standings[player * 2 + 1][0],
+                 standings[player * 2 + 1][1])
         list_of_pairs.append(pairs)
     return list_of_pairs
